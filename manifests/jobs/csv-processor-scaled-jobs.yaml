@@ -1,0 +1,43 @@
+apiVersion: keda.sh/v1alpha1
+kind: ScaledJob
+metadata:
+  name: csv-processor
+spec:
+  jobTargetRef:
+    template:
+      spec:
+        containers:
+        - name: csv-processor
+          image: localhost:5000/csvprocessor
+          env:
+          - name: REDIS_HOST
+            value: 10.96.78.86
+          - name: REDIS_LIST
+            value: csvs-to-process
+          resources:
+            limits:
+              cpu: "0.2"
+              memory: "100Mi"
+            requests:
+              cpu: "0.2"
+              memory: "100Mi"
+
+          volumeMounts:
+          - name: data-volume
+            mountPath: /app/data
+        volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: data-pvc
+        restartPolicy: Never
+  pollingInterval: 10
+  maxReplicaCount: 5
+
+  triggers:
+  - type: redis
+    metadata:
+      address: 10.96.78.86:6379
+      listName: csvs-to-process
+      dataType: list
+      name: redis-trigger
+      queueName: csvs-to-process

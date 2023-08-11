@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: data-generator
+spec:
+  template:
+    spec:
+      containers:
+      - name: data-generator
+        image: localhost:5000/datagenerator
+        env:
+          - name: REDIS_HOST
+            value: 10.96.78.86
+          - name: REDIS_LIST
+            value: csvs-to-process
+        volumeMounts:
+        - name: data-volume
+          mountPath: /app/data
+      restartPolicy: Never
+      volumes:
+      - name: data-volume
+        persistentVolumeClaim:
+          claimName: data-pvc
