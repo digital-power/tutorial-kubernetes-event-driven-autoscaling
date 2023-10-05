@@ -2,8 +2,6 @@ import os
 import pandas as pd
 import redis
 from typing import Tuple
-import time
-import logging
 
 
 def main():
@@ -16,7 +14,7 @@ def aggregate_csv(filename_raw: str, df: pd.DataFrame) -> None:
     aggregated_data = df.groupby('item_id')['quantity_sold'].sum().reset_index()
 
     # Create the 'processed' directory if it doesn't exist
-    processed_directory = os.path.join('..', 'data', 'processed')
+    processed_directory = os.path.join(os.path.dirname(__file__), '..', 'data/processed')
     if not os.path.exists(processed_directory):
         os.makedirs(processed_directory)
 

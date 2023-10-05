@@ -11,7 +11,7 @@ spec:
           image: localhost:5000/csvprocessor
           env:
           - name: REDIS_HOST
-            value: 10.96.78.86
+            value: 10.101.174.30
           - name: REDIS_LIST
             value: csvs-to-process
           resources:
@@ -36,7 +36,7 @@ spec:
   triggers:
   - type: redis
     metadata:
-      address: 10.96.78.86:6379
+      address: 10.101.174.30:6379
       listName: csvs-to-process
       dataType: list
       name: redis-trigger

@@ -10,7 +10,7 @@ spec:
         image: localhost:5000/datagenerator
         env:
           - name: REDIS_HOST
-            value: 10.96.78.86
+            value: 10.101.174.30
           - name: REDIS_LIST
             value: csvs-to-process
         volumeMounts:
